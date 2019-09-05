@@ -55,10 +55,10 @@ public abstract class WorldBase {
 
         for (int i = 0; i <= 800; i = i + GridPixelsize) {
         	
-        	
-            g.setColor(Color.WHITE);
-           // g.drawLine(0, i, handler.getWidth() , i);
-           // g.drawLine(i,0,i,handler.getHeight());
+        	Color purple = new Color(255, 128, 255);
+            g.setColor(purple);
+            g.drawLine(0, i, handler.getWidth() , i);
+            g.drawLine(i,0,i,handler.getHeight());
 
         }
 
