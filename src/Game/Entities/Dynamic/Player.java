@@ -35,7 +35,7 @@ public class Player {
 
     public void tick(){
         moveCounter++;
-        if(moveCounter>=5) {
+        if(moveCounter>=3) {
             checkCollisionAndMove();
             moveCounter=0;
         }
@@ -104,18 +104,17 @@ public class Player {
         Random r = new Random();
         for (int i = 0; i < handler.getWorld().GridWidthHeightPixelCount; i++) {
             for (int j = 0; j < handler.getWorld().GridWidthHeightPixelCount; j++) {
-                g.setColor(Color.WHITE);
-
+            	Color multiColor = new Color (r.nextInt(176) , r.nextInt(176) , r.nextInt(176)); //This is use to make the Snake MultiColor
+            	g.setColor(multiColor);
+  
                 if(playeLocation[i][j]||handler.getWorld().appleLocation[i][j]){
                     g.fillRect((i*handler.getWorld().GridPixelsize),
                             (j*handler.getWorld().GridPixelsize),
                             handler.getWorld().GridPixelsize,
                             handler.getWorld().GridPixelsize);
                 }
-
             }
         }
-
 
     }
 
