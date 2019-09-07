@@ -35,7 +35,7 @@ public class Player {
 
     public void tick(){
         moveCounter++;
-        if(moveCounter>=3) {
+        if(moveCounter>=4) {
             checkCollisionAndMove();
             moveCounter=0;
         }
@@ -52,6 +52,15 @@ public class Player {
         if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_N)) {
         	handler.getWorld().body.add(new Tail(this.xCoord, this.yCoord, handler));
         }
+        int speed = 40;
+        if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_EQUALS)){
+      	  checkCollisionAndMove();
+          moveCounter = moveCounter + speed;
+      }
+        if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_MINUS)){
+      	  checkCollisionAndMove();
+          moveCounter = moveCounter - speed;
+      }
         
 
     }
