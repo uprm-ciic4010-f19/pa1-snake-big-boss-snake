@@ -40,14 +40,27 @@ public class Player {
             moveCounter=0;
         }
         if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_UP)){
-            direction="Up";
+        	if (direction == "Down") {
+        		moveCounter = 0;
+        	}else
+        		direction="Up";
         }if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_DOWN)){
-            direction="Down";
+        	if (direction == "Up") {
+        		moveCounter = 0;
+        	}else
+        		direction="Down";
         }if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_LEFT)){
-            direction="Left";
+        	if (direction == "Right") {
+        		moveCounter = 0;
+        	}else
+        		direction="Left";
         }if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_RIGHT)){
-            direction="Right";
+        	if (direction == "Left") {
+        		moveCounter = 0;
+        	}else
+        		direction="Right";
         }
+        
         
         if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_N)) {
         	handler.getWorld().body.add(new Tail(this.xCoord, this.yCoord, handler));
