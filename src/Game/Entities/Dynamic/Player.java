@@ -17,6 +17,8 @@ public class Player {
 
     public int xCoord;
     public int yCoord;
+    public int Score = 0;
+    public int CurrScore = -1;
 
     public int moveCounter;
 
@@ -117,6 +119,7 @@ public class Player {
 
         if(handler.getWorld().appleLocation[xCoord][yCoord]){
             Eat();
+            CurrScore += Score;
         }
 
         if(!handler.getWorld().body.isEmpty()) {
@@ -133,6 +136,16 @@ public class Player {
             for (int j = 0; j < handler.getWorld().GridWidthHeightPixelCount; j++) {
             	Color multiColor = new Color (r.nextInt(176) , r.nextInt(176) , r.nextInt(176)); //This is use to make the Snake MultiColor
             	g.setColor(multiColor);
+            	
+            	//Counter of the Score everytime the snake eats 
+            	if(handler.getWorld().appleLocation[i][j]){
+            		g.setColor(Color.red);
+            		g.setFont(new Font("",1,20));
+            		Score= (int) Math.sqrt(2* CurrScore + 1);
+            		g.drawString("Score: "+ Score ,10,30);
+            		Score++;
+            	
+            	}
   
                 if(playeLocation[i][j]||handler.getWorld().appleLocation[i][j]){
                     g.fillRect((i*handler.getWorld().GridPixelsize),
