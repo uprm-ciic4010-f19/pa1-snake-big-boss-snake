@@ -6,6 +6,8 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Random;
 
+import Game.GameStates.State;
+
 /**
  * Created by AlexVR on 7/2/2018.
  */
@@ -74,8 +76,15 @@ public class Player {
       	  checkCollisionAndMove();
           moveCounter = moveCounter - speed;
       }
-        
-
+        //Game Over when snake collides with itself
+        for (int e = 1; e < handler.getWorld().body.size(); e++) {
+        	if (!handler.getWorld().body.isEmpty()) {
+        		if ( (handler.getWorld().body.getFirst().x == handler.getWorld().body.get(e).x) &&
+        				(handler.getWorld().body.getFirst().y == handler.getWorld().body.get(e).y)) {
+        			 State.setState(handler.getGame().gameOverState);
+        		}
+        	}
+        }
     }
 
     public void checkCollisionAndMove(){
@@ -259,7 +268,6 @@ public class Player {
             for (int j = 0; j < handler.getWorld().GridWidthHeightPixelCount; j++) {
 
                 handler.getWorld().playerLocation[i][j]=false;
-
             }
         }
     }
