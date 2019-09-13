@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.util.Random;
 
 import Game.GameStates.State;
+import Game.Entities.Static.Apple;
 
 /**
  * Created by AlexVR on 7/2/2018.
@@ -15,12 +16,14 @@ public class Player {
 
     public int lenght;
     public boolean justAte;
+    public boolean notRotten;
     private Handler handler;
 
     public int xCoord;
     public int yCoord;
     public int Score = 0;
     public int CurrScore = -1;
+    public int stepCount = 0;
 
     public int moveCounter;
 
@@ -33,6 +36,7 @@ public class Player {
         moveCounter = 0;
         direction= "Right";
         justAte = false;
+        notRotten = true;
         lenght= 1;
 
     }
@@ -87,6 +91,12 @@ public class Player {
         		}
         	}
         }
+        if (stepCount >= 70 && stepCount < 100) {
+        	handler.getWorld().apple.setisGood(false);
+        }
+        if (stepCount >= 100) {
+        	handler.getWorld().apple.setisGood(notRotten);;
+        }
     }
 
     public void checkCollisionAndMove(){
@@ -128,7 +138,16 @@ public class Player {
 
         if(handler.getWorld().appleLocation[xCoord][yCoord]){
             Eat();
-            CurrScore += Score;
+            if ((!handler.getWorld().body.isEmpty()) && (handler.getWorld().apple.isGood() == false)) {
+    			handler.getWorld().body.removeLast();
+    			kill();
+            }
+            if (handler.getWorld().apple.isGood() == true) {
+            	CurrScore += Score;
+            }else {
+            	CurrScore -= Score;
+            }
+            stepCount = 0;
         }
 
         if(!handler.getWorld().body.isEmpty()) {
@@ -136,7 +155,8 @@ public class Player {
             handler.getWorld().body.removeLast();
             handler.getWorld().body.addFirst(new Tail(x, y,handler));
         }
-
+        stepCount++;
+        System.out.println(stepCount); 
     }
 
     public void render(Graphics g,Boolean[][] playeLocation){
@@ -148,11 +168,16 @@ public class Player {
             	
             	//Counter of the Score everytime the snake eats 
             	if(handler.getWorld().appleLocation[i][j]){
-            		g.setColor(Color.red);
             		g.setFont(new Font("",1,20));
             		Score= (int) Math.sqrt(2* CurrScore + 1);
             		g.drawString("Score: "+ Score ,10,30);
+            		g.setColor(Color.red); //changed color here so only apple is red
+            		if (handler.getWorld().apple.isGood() == false) {
+            			g.setColor(Color.YELLOW);
+            			Score--;
+            		}
             		Score++;
+            		
             	
             	}
   
@@ -271,8 +296,11 @@ public class Player {
                 }
                 break;
         }
-        handler.getWorld().body.addLast(tail);
-        handler.getWorld().playerLocation[tail.x][tail.y] = true;
+        if (handler.getWorld().apple.isGood() == true) {
+        	 handler.getWorld().body.addLast(tail);
+             handler.getWorld().playerLocation[tail.x][tail.y] = true;
+             kill();
+        }
     }
 
     public void kill(){
