@@ -155,8 +155,9 @@ public class Player {
             }else {
             	CurrScore -= Score;
             	LastDigitID--;
-            	speed = LastDigitID - 1;
-            	
+            	if (!handler.getWorld().body.isEmpty()) {
+            		speed = LastDigitID - 1;
+            	}
             }
             stepCount = 0;
         }
