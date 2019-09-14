@@ -24,6 +24,8 @@ public class Player {
     public int Score = 0;
     public int CurrScore = -1;
     public int stepCount = 0;
+    public int speed = 2;
+    public int LastDigitID = 0;
 
     public int moveCounter;
 
@@ -34,6 +36,7 @@ public class Player {
         xCoord = 0;
         yCoord = 0;
         moveCounter = 0;
+        speed = 2;
         direction= "Right";
         justAte = false;
         notRotten = true;
@@ -43,9 +46,10 @@ public class Player {
 
     public void tick(){
         moveCounter++;
-        if(moveCounter>=4) {
+        if(moveCounter >= 15) {
             checkCollisionAndMove();
-            moveCounter=0;
+            moveCounter = 0;
+            
         }
         if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_UP)){
         	if (direction == "Down") {
@@ -73,15 +77,17 @@ public class Player {
         if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_N)) {
         	handler.getWorld().body.add(new Tail(this.xCoord, this.yCoord, handler));
         }
-        int speed = 40;
+        moveCounter += speed;
         if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_EQUALS)){
       	  checkCollisionAndMove();
-          moveCounter = moveCounter + speed;
+          speed++;
       }
+        
         if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_MINUS)){
       	  checkCollisionAndMove();
-          moveCounter = moveCounter - speed;
+          speed--;
       }
+        
         //Game Over when snake collides with itself
         for (int e = 1; e < handler.getWorld().body.size(); e++) {
         	if (!handler.getWorld().body.isEmpty()) {
@@ -91,10 +97,10 @@ public class Player {
         		}
         	}
         }
-        if (stepCount >= 70 && stepCount < 100) {
+        if (stepCount >= 70 && stepCount < 200) {
         	handler.getWorld().apple.setisGood(false);
         }
-        if (stepCount >= 100) {
+        if (stepCount >= 200) {
         	handler.getWorld().apple.setisGood(notRotten);;
         }
     }
@@ -142,10 +148,15 @@ public class Player {
     			handler.getWorld().body.removeLast();
     			kill();
             }
+            LastDigitID++;
             if (handler.getWorld().apple.isGood() == true) {
             	CurrScore += Score;
+            	speed = LastDigitID + 1;
             }else {
             	CurrScore -= Score;
+            	LastDigitID--;
+            	speed = LastDigitID - 1;
+            	
             }
             stepCount = 0;
         }
@@ -177,6 +188,7 @@ public class Player {
             			Score--;
             		}
             		Score++;
+            		
             		
             	
             	}
